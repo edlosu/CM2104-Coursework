@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 
+  <!--  Bootstrap  -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.0/css/bootstrap.min.css"> 
+   <link rel="stylesheet" href="../css/main.css">
+  <style>
+  	
+    .thread-entry {
+      background-color: #a7a7a7;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .thread-entry:hover {
+      background-color: #467099;
+    }
+    
+    .card-text {
+    display: inline;
+    margin-left: 10px; /* Adjust the margin as needed */
+}
+	.flex-wrapper {
+				 display: flex;
+				flex-direction: column;
+				height: 100%;
+			}
+    
+  </style>
+</head>
+
+<body>
+	
+			 <!--Navigation bar-->
+	   <nav class="navbar navbar-expand">
+	      <div class="container-fluid">
+	          <div class="navbar-brand"><div class="">Platinum Library</div></div>
+	          
+	          <div class="collapse navbar-collapse" id = "navbarNav">
+	              <ul class="navbar-nav ms-auto">
+	                  <li><a href="homepage.html">Home</a></li>
+	                  <li><a href="discussions.html">Discussions</a></li>
+	                  <li><a href="store.html">Store</a></li>
+	                  <li><a href="account.html">Account</a></li>
+	               
+	              </ul>
+	          </div>
+	      </div>
+
+	  </nav>
+	
+	
+	
+	
+	
+	
+	
+	
+	<!-- Start -->
+
+	
+	<div class="container mt-5">
+	  <h1>Disscussions</h1>
+
+	  <!-- All ever Started Disucssions Container -->
+	  <div id="threads-container" class="mt-4"></div>
+	  <!-- Button to Open New Thread Modal -->
+	  <div class="text-center">
+	  <button type="button" class="btn btn-primary mt-3" data-toggle="modal" data-target="#newThreadModal"> New Discussion </button>
+		</div>
+
+
+	  <!-- New Input Discussions Modal -->
+	  <div class="modal fade" id="newThreadModal" tabindex="-1" role="dialog" aria-labelledby="newThreadModalLabel" aria-hidden="true">
+	    <div class="modal-dialog" role="document">
+	    	
+	      <div class="modal-content">
+	        <div class="modal-header">
+	        	
+	          <h5 class="modal-title" id="newThreadModalLabel">Create a New Thread</h5>
+	          <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+	       
+	        </div>
+	        
+	        
+	        <div class="modal-body">
+	        	
+	          <!--  Form INput to create new discussion -->
+	          <form id="new-thread-form">
+
+	            <div class="form-group">
+	              <label for="thread-title">Discussion Topic:</label>
+	              <input type="text" class="form-control" id="thread-title" required>
+	            </div>
+	            
+	            
+	            
+	            
+	             <div class="form-group">
+			            <label for="queryInput">Select book:</label>
+			            <input type="text" class="form-control" id="queryInput" placeholder="e.g., Harry Potter">
+			          </div>
+			          
+			          <button type="button" class="btn btn-primary" onclick="searchBooks()">Search</button>
+			          <div class="form-group mt-3">
+			            <label for="bookSelect">Chosen Selection:</label>
+			            <select class="form-control" id="bookSelect"></select>
+			          </div>
+	 
+	            
+	            
+	            
+	            <div class="form-group">
+	              <label for="thread-content"> Content:</label>
+	              <textarea class="form-control" id="thread-content" rows="3" required></textarea>
+	      
+	            </div>
+	
+	            
+	            <button type="submit" class="btn btn-primary">Add Thread</button>
+	          
+	          </form>
+	          
+	        </div>
+	      </div>
+	    </div>
+	  </div>
+
+	  <!-- Displaying a whole discussion Modal Details -->
+	  <div class="modal fade" id="threadDetailsModal" tabindex="-1" role="dialog" aria-labelledby="threadDetailsModalLabel" aria-hidden="true">
+	    
+	    <div class="modal-dialog" role="document">
+	    	
+	      <div class="modal-content">
+	        <div class="modal-header">
+	          
+	          <h5 class="modal-title" id="threadDetailsModalLabel">Thread Details</h5>
+	          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        
+	        </div>
+	        
+	        <div class="modal-body">
+	          <div id="selected-thread-content"></div>
+	        </div>
+	        
+	      </div>
+	    </div>
+	  </div>
+	  
+	  
+	</div>
+
+	
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+	
+	<script>
+		
+	  // Start data placehgolder
+	  const sampleThreads = [
+	    { title: 'Thread 1', content: 'content written for Thread 1.' },
+	    { title: 'Thread 2', content: ' content written for Thread 2.' },
+	   
+	  ];
+
+ 	 	/*
+		function searchBooks() {
+		    const query = document.getElementById('queryInput').value;
+		    const selectBox = document.getElementById('bookSelect');
+
+		    if (query) {
+		      // Construct the Open Library API search URL
+		      const apiUrl = `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&fields=*&limit=5`;
+
+		      // Perform the API request using fetch
+		      fetch(apiUrl)
+		        .then(response => response.json())
+		        .then(data => {
+		          // Clear existing options
+		          selectBox.innerHTML = '';
+
+		          // Check if any results were found
+		          if (data.docs.length > 0) {
+		            // Print the 'docs' objects to the console
+		            console.log('API Response - Docs:', data.docs);
+
+		            // Populate the dropdown with the found books
+		            data.docs.forEach(result => {
+		              const title = result.title;
+		              const author = result.author_name ? result.author_name[0] : 'Unknown';
+
+		              const option = document.createElement('option');
+		              option.value = `${title} by ${author}`;
+		              option.text = `${title} by ${author}`;
+
+		              selectBox.appendChild(option);
+		            });
+		          } else {
+		            // Add a default option for no results
+		            const option = document.createElement('option');
+		            option.text = 'No results found';
+		            option.disabled = true;
+		            selectBox.appendChild(option);
+		          }
+		        })
+		        .catch(error => {
+		          console.error('Error fetching data:', error);
+		          alert('An error occurred while fetching data. Please try again.');
+		        });
+		    } else {
+		      alert('Please enter a valid query.');
+		    }
+		  }
+
+	*/
+	
+	//AJAX request and handling 
+	function searchBooks() {
+  const query = document.getElementById('queryInput').value;
+  const selectBox = document.getElementById('bookSelect');
+
+  if (query) {
+   
+    const apiUrl = `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&fields=*&limit=5`;
+
+    // XMLHttpRequest object
+    const xhr = new XMLHttpRequest();
+
+    // set a request
+    xhr.open('GET', apiUrl, true);
+
+    // handle  response
+    xhr.onreadystatechange = function () {
+    	
+    	
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+        	
+        	
+        	
+          // Parse the JSON response
+          const data = JSON.parse(xhr.responseText);
+
+        
+          selectBox.innerHTML = '';
+
+      
+          if (data.docs.length > 0) {
+          
+						//Edit the HMTML contents with correcponding item
+            data.docs.forEach(result => {
+              const title = result.title;
+              const author = result.author_name ? result.author_name[0] : 'Unknown';
+
+              const option = document.createElement('option');
+              option.value = `${title} by ${author}`;
+              option.text = `${title} by ${author}`;
+
+              selectBox.appendChild(option);
+            });
+            
+          } else {
+          	
+            // A option for no results
+            const option = document.createElement('option');
+            option.text = 'No results found';
+            option.disabled = true;
+            selectBox.appendChild(option);
+          }
+        } else {
+          // errors,
+          console.error('Error fetching data:', xhr.statusText);
+          alert('An error occurred while fetching data. Please try again.');
+        }
+      }
+    };
+
+    // Send the request
+    xhr.send();
+  } else {
+    alert('Please enter a valid query.');
+  }
+}
+
+
+
+
+	  // renders threads
+	  function renderThreads() {
+	    const threadsContainer = $('#threads-container');
+	    threadsContainer.empty();
+
+	    sampleThreads.forEach((thread, index) => {
+	      const threadHtml = `
+	        <div class="card mt-3 thread-entry" data-toggle="modal" data-target="#threadDetailsModal" data-thread-index="${index}">
+	          <div class="card-body ">
+	          <div class="row">
+            <!-- Image Placeholder -->
+            <div class="col-md-2">
+                <img src="placeholder.jpg" alt="Image Placeholder" class="img-fluid">
+            </div>
+            <!-- Thread Information -->
+            <div class="col-md-10">
+                <h3 class="card-title d-inline">${thread.title}</h3>
+                <p class="card-text d-inline ml-2">${thread.content}</p>
+                <!-- Additional Information -->
+                <div class="row mt-2">
+                    <div class="col-md-6">
+                        <p class="mb-0">Work: Work Title</p>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <p class="mb-0">Last Poster: User123</p>
+                        <p class="mb-0">Date/Time: 2023-01-01 12:00 PM</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+	          </div>
+	        </div>
+	      `;
+	      threadsContainer.append(threadHtml);
+	    });
+	  }
+
+
+
+
+
+
+
+	  // form submission event listener for making new thread 
+	  $('#new-thread-form').submit(function (event) {
+	    event.preventDefault();
+
+	    const title = $('#thread-title').val();
+	    const content = $('#thread-content').val();
+
+	    // Add the new thread to the data array
+	    sampleThreads.push({ title, content });
+
+	    // Clear the form fields
+	    $('#thread-title').val('');
+	    $('#thread-content').val('');
+
+	    // Close the new thread modal
+	    $('#newThreadModal').modal('hide');
+
+	    // Render the updated threads
+	    renderThreads();
+	  });
+
+	  //   opening thread Event listener details making modal
+	  $('#threads-container').on('click', '.thread-entry', function () {
+	    const threadIndex = $(this).data('thread-index');
+	    const selectedThread = sampleThreads[threadIndex];
+
+	    // Update the content of the thread details modal
+	    $('#selected-thread-content').html(`
+	      <h5>${selectedThread.title}</h5>
+	      <p>${selectedThread.content}</p>
+	    `);
+
+	    // Show the thread details modal
+	    $('#threadDetailsModal').modal('show');
+	  });
+
+	  // Initial threads 
+	  renderThreads();
+	</script>
+
+
+
+	<div class="flex-wrapper">
+	 <footer id="footer">
+	      <div class="container py-4 mt-4">
+	        <div class="row mt-4">
+	          <!--Column 1-->
+	           <div class="col-md-3">
+	          	
+	            <h5 class="footer-heading"><P>Contact Us</P></h5>
+	            <ul class="mt-4 footer-li">
+	              <li>An Address</li>
+	              <li>library location</li>
+	              <li>platinumlibrary@email</li>
+	              <li>tel number: 039549342354</li>
+	            </ul>
+	          </div>
+
+	           <!--Column 2-->
+	          <div class="col-md-2">
+	            <h5 class="text-muted"><b>Site links</b></h5>
+	            <ul class="footer-li mt-4">
+	              <li><a href="">Home</a></li>
+	              <li><a href="">Disscussions</a></li>
+	              <li><a href="">Store</a></li>
+	              <li><a href="">Account</a></li>
+	              
+	            </ul>
+	          </div>
+
+	        <!-- Column 3-->
+
+	          <div class="col-md-6">
+	            <h5 class="footer-heading">About Us</h5>
+	            <p>This is the website is dedicated to sorting and providing facilities relating to any searched material</p>
+	          </div>
+
+	        </div>
+	        
+	   
+	        
+	      
+	        
+	      </div>
+	    </footer>
+	</body>
+</html>

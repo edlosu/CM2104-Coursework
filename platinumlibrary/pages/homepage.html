@@ -1,0 +1,228 @@
+	<!DOCTYPE html>
+<html>
+	<head>
+	  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.0/css/bootstrap.min.css"> 
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/homepage.css">
+	    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+		<style> 
+			.flex-wrapper {
+			
+		
+			}
+  #results-container * {
+    display: none;
+  }
+  
+  	#info{
+  		display: none;
+  		}
+		</style>
+	
+	</head>
+
+	<body>
+		 <!--Navigation bar-->
+	   <nav class="navbar navbar-expand">
+	      <div class="container-fluid">
+	          <div class="navbar-brand"><div class="">Platinum Library</div></div> 
+	          
+	          <div class="collapse navbar-collapse" id = "navbarNav">
+	              <ul class="navbar-nav ms-auto">
+	                  <li><a href="">Home</a></li>
+	                  <li><a href="discussions.html">Discussions</a></li>
+	                  <li><a href="store.html">Store</a></li>
+	                  <li><a href="account.html">Account</a></li>
+	               
+	              </ul>
+	          </div>
+	      </div>
+
+	  </nav>
+	  
+	  <div class="image-banner">
+		  
+	  </div>
+	  
+	  <!-- Main content  -->
+	  <div class="container mb-4" >
+    	<h3>Query</h3>
+        <div class="row">
+	        <!--Query on left column-->
+	        <div class="col-sm-6"> 
+	        	
+	        	<p>Search the librarties from options</p>
+	        	
+	        	<div id='query-option'></div>
+	        	<div id='search-input'></div>
+	        	
+						<div class="input-group mb-3">
+						  <input type="text" class="form-control" placeholder="Find a search" aria-label="query" aria-describedby="basic-addon2" id='query'>
+						  <div class="input-group-append">
+						  	
+						    <button class="btn btn-outline-secondary" type="button" onclick="getQuery()" >Search</button>
+						  </div>
+						</div>
+						
+						<h6>Examples</h6>
+						<div>Harry Potter</div> 
+						<div>
+							H. G. Wells
+							</div>
+   		
+	    		</div>
+	    		
+	    		
+	    		
+	    		
+	    		<!--Results on right column-->
+	    		<div class="col-sm-6" > 
+	    			<p id='info'>Displaying results x1-x2 in y found.</p> 	    		<!--Dynamic details-->
+
+	    			
+	    			<div id='results-container'>
+	    				<div class="row">
+	    					<div class="col">
+
+							  <div class="item"><placeholder></></div>
+							  <div class="item"><placeholder></></div>
+							</div>
+							<div class="col">
+
+							  <div class="item"></div>
+							  <div class="item"></div>
+							  							</div>
+
+							</div>
+							 			
+	    			<!--Buttons navigation-->
+						<input type="button" id='prev' value='Previous'onclick="prevQuerySet()"/>		
+						<input type="button" id='next' value='Next' onclick="nextQuerySet()"/>
+						
+						
+							
+	    			</div>
+	    			
+	   
+	    		</div>
+	    		
+	    	</div>
+
+    </div>
+    
+    
+    <script>
+	    var limit = 4;
+			var current= 1;
+			
+			var elementsItem = document.getElementsByClassName('item')
+			
+			// request for next data
+			function nextQuerySet(){
+					current++;
+					getQuery();
+			
+			}
+			
+			//request for previous data
+			function prevQuerySet(){
+				current--;
+				getQuery();
+			}
+			
+				
+			//Start A request 
+			function getQuery(){
+				var text = document.getElementById('query').value;
+				var url = `https://openlibrary.org/search.json?q=${encodeURIComponent(text)}&page=${current}&fields=*&limit=${limit}`;
+				
+
+				
+				fetch(url).then(response => {
+					return response.json();	
+						
+				}).then( data => {	
+						//  data obtained from request
+						var found = data.num_found;
+						var queryInfo = `Displaying results ${current * limit - limit + 1}-${limit * current} in ${found} found for ${text}`;
+						
+						data.docs.forEach(( result, index) =>{
+							
+							const title = result.title;
+							const author = result.author_name ? result.author_name[0] : 'Unknown';
+							$('#info').text(queryInfo);
+							
+							//Edit/Add  items request array to a respective HTML element	
+							if (elementsItem[index]){
+							
+								elementsItem[index].textContent = title;
+								elementsItem[index].appendChild(document.createElement('p')).textContent = author;	
+							    
+							
+							}
+					
+							
+							
+							
+						})
+						
+						//display resiults with effects
+					var elements = $('#results-container');
+      		elements.find('*').fadeIn();
+					$('#info').fadeIn();
+					
+				})
+
+
+	
+
+			}			
+    </script>
+    
+    
+    <div class="flex-wrapper">
+    <footer id="footer" >
+      <div class="container py-4 mt-4">
+        <div class="row mt-4">
+          <!--Column 1-->
+           <div class="col-md-3">
+          	
+            <h5 class="footer-heading"><P>Contact Us</P></h5>
+            <ul class="mt-4 footer-li">
+              <li>An Address</li>
+              <li>library location</li>
+              <li>platinumlibrary@email</li>
+              <li>tel number: 039549342354</li>
+            </ul>
+          </div>
+
+           <!--Column 2-->
+          <div class="col-md-2">
+            <h5 class="text-muted"><b>Site links</b></h5>
+            <ul class="footer-li mt-4">
+              <li><a href="">Home</a></li>
+              <li><a href="">Disscussions</a></li>
+              <li><a href="">Store</a></li>
+              <li><a href="">Account</a></li>
+              
+            </ul>
+          </div>
+
+        <!-- Column 3-->
+
+          <div class="col-md-6">
+            <h5 class="footer-heading">About Us</h5>
+            <p>This is the website is dedicated to sorting and providing facilities relating to any searched material</p>
+          </div>
+
+        </div>
+        
+   
+        
+      
+        
+      </div>
+    </footer>
+	</div>
+	</body>
+</html>

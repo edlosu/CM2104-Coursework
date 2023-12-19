@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Store Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.0/css/bootstrap.min.css"> 
+    <link rel="stylesheet" href="../css/main.css">
+   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <style>
+ 			        .membership-options {
+            display: flex;
+            flex-wrap: wrap; /* Allow items to wrap to the next line if needed */
+            justify-content: space-between;
+        }
+
+        .form-check {
+            width: 48%; /* Set width to control the space between radio buttons */
+            margin-bottom: 10px; /* Adjust margin as needed */
+        }
+
+        .btn-purchase {
+            margin-bottom: 250px; /* Adjust the margin as needed */
+        }
+       
+    </style>
+</head>
+<body>
+<!--Navigation bar-->
+	   <nav class="navbar navbar-expand">
+	      <div class="container-fluid">
+	          <div class="navbar-brand"><div>Platinum Library</div></div> 
+	          
+	          <div class="collapse navbar-collapse" id = "navbarNav">
+	              <ul class="navbar-nav ms-auto">
+	                  <li><a href="homepage.html">Home</a></li>
+	                  <li><a href="discussions.html">Discussions</a></li>
+	                  <li><a href="store.html">Store</a></li>
+	                  <li><a href="account.html">Account</a></li>
+	               
+	              </ul>
+	          </div>
+	      </div>
+
+	  </nav>
+
+
+    <div class="container mt-5">
+        <div class="">
+            <h2 class="mt-3">Store</h2>
+					<p>Add funds to your account </p>
+					<div class="container mb-4" >
+						  <div class="row">
+						    <div class="col col-lg-2">
+						      Reward option 1
+						    </div>
+						    <div class="col col-lg-2">
+						      100
+						      <input type="radio" name="" value="" id="radio1" onclick="toggleRadio(1)" />
+						    </div>
+
+						  </div>
+
+							<div class="row">
+								   <div class="col col-lg-2">
+						      Reward option 2
+						    </div>
+						    <div class="col col-lg-2">
+						      50
+						      <input type="radio" name="" value=""id="radio2" onclick="toggleRadio(2)" />
+						    </div>
+						  
+								
+							</div>
+					</div>
+
+					
+            
+            
+            
+            <div class="mt-3 btn-purchase">
+                <p id='info'>Funds Available: 100</p>
+                <button class="btn btn-primary" onclick="updateFunds()">Purchase</button>
+            </div>
+        </div>
+    </div>
+
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+ <footer id="footer" >
+      <div class="container py-4 mt-4">
+        <div class="row mt-4">
+          <!--Column 1-->
+           <div class="col-md-3">
+          	
+            <h5 class="footer-heading"><P>Contact Us</P></h5>
+            <ul class="mt-4 footer-li">
+              <li>An Address</li>
+              <li>library location</li>
+              <li>platinumlibrary@email</li>
+              <li>tel number: 039549342354</li>
+            </ul>
+          </div>
+
+           <!--Column 2-->
+          <div class="col-md-2">
+            <h5 class="text-muted"><b>Site links</b></h5>
+            <ul class="footer-li mt-4">
+              <li><a href="">Home</a></li>
+              <li><a href="">Disscussions</a></li>
+              <li><a href="">Store</a></li>
+              <li><a href="">Account</a></li>
+              
+            </ul>
+          </div>
+
+        <!-- Column 3-->
+
+          <div class="col-md-6">
+            <h5 class="footer-heading">About Us</h5>
+            <p>This is the website is dedicated to sorting and providing facilities relating to any searched material</p>
+          </div>
+
+        </div>
+        
+   
+        
+      
+        
+      </div>
+      
+      
+      <script>
+      	var funds = 100
+      	var radio1 = document.getElementById('radio1');
+			  var radio2 = document.getElementById('radio2');
+			  var infoFunds = document.getElementById('info')
+
+      	function toggleRadio(radioNumber) {
+			    //  click event
+			    if (radioNumber === 1) {
+			      // If Radio 1 checked and uncheck Radio 2
+			      radio1.checked = true;
+			      radio2.checked = false;
+			    } else if (radioNumber === 2) {
+			      //  Radio 2 checked and uncheck Radio 1
+			      radio1.checked = false;
+			      radio2.checked = true;
+			    }
+				}
+			  
+			  function updateFunds(){
+			  	 if (radio1.checked) {
+				      funds += 100;
+				   } else if (radio2.checked) {
+				      funds += 50;
+				   }
+
+				    // Clear the radio buttons after updating funds
+				    radio1.checked = false;
+				    radio2.checked = false;
+				    
+				    infoFunds.textContent = "Funds Available: " + funds;
+				    
+				    alert("Payment successful");
+			  }
+			  
+      	
+      </script>
+    </footer>
+</body>
+</html>

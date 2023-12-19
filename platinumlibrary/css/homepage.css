@@ -1,0 +1,11 @@
+
+.image-banner{
+    background-image: url("../images/library.jpg");
+    background-size: cover; 
+    background-position: center; 
+    color: white; 
+    text-align: center; 
+    padding: 20px; 
+ 
+    height:230px
+}
